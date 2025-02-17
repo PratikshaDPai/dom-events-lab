@@ -17,7 +17,8 @@ buttons.forEach((button) => {
     } else if (buttonVal === "=") {
       const expression = displayElement.innerText;
       let sum = 0;
-      let num = 0;
+      let num = 0; // number after operand
+      let prev = 0; // number before operand, needed for PEMDAS
       let operator = "+";
       for (let i = 0; i < expression.length; i++) {
         let digit = +expression[i];
@@ -28,15 +29,18 @@ buttons.forEach((button) => {
         if (Number.isNaN(digit) || i === expression.length - 1) {
           // process expression when we reach an operator or the end
           if (operator === "+") {
-            sum += num;
+            sum += prev;
+            prev = num;
           } else if (operator === "-") {
-            num = -num;
-            sum += num;
+            sum += prev;
+            prev = -num;
           }
           num = 0;
           operator = expression[i];
         }
       }
+
+      sum += prev;
       displayElement.innerText = sum;
     } else {
       displayElement.innerText += event.target.innerText;
