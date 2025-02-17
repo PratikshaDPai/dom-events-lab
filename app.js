@@ -1,11 +1,10 @@
 /*-------------------------------- Constants --------------------------------*/
-const buttons = document.querySelectorAll(".button");
-const displayElement = document.querySelector(".display");
 
 /*-------------------------------- Variables --------------------------------*/
 
 /*------------------------ Cached Element References ------------------------*/
-
+const buttons = document.querySelectorAll(".button");
+const displayElement = document.querySelector(".display");
 /*----------------------------- Event Listeners -----------------------------*/
 buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
