@@ -28,12 +28,21 @@ buttons.forEach((button) => {
         }
         if (Number.isNaN(digit) || i === expression.length - 1) {
           // process expression when we reach an operator or the end
-          if (operator === "+") {
+          if (operator === "*") {
+            // multiply previous number with current number
+            prev *= num;
+          } else if (operator === "/") {
+            prev /= num;
+          } else if (operator === "+") {
+            // only evaluate final sum after multiplication and division
             sum += prev;
+            //update prev to the current number in case of future / or *
             prev = num;
           } else if (operator === "-") {
             sum += prev;
             prev = -num;
+          } else {
+            displayElement.innerText = "ERROR";
           }
           num = 0;
           operator = expression[i];
