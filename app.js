@@ -15,11 +15,32 @@ buttons.forEach((button) => {
     if (buttonVal === "C") {
       clear();
     } else if (buttonVal === "=") {
-      displayElement.innerText = eval(displayElement.innerText);
+      const expression = displayElement.innerText;
+      let sum = 0;
+      let num = 0;
+      let operator = "+";
+      for (let i = 0; i < expression.length; i++) {
+        let digit = +expression[i];
+        if (!isNaN(digit)) {
+          // if digit then update num
+          num = num * 10 + digit;
+        }
+        if (Number.isNaN(digit) || i === expression.length - 1) {
+          // process expression when we reach an operator or the end
+          if (operator === "+") {
+            sum += num;
+          } else if (operator === "-") {
+            num = -num;
+            sum += num;
+          }
+          num = 0;
+          operator = expression[i];
+        }
+      }
+      displayElement.innerText = sum;
     } else {
       displayElement.innerText += event.target.innerText;
     }
-    // Future logic to capture the button's value would go here...
   });
 });
 
@@ -29,7 +50,6 @@ function add(num1, num2) {}
 function subtract(num1, num2) {}
 function multiply(num1, num2) {}
 function divide(num1, num2) {}
-function displayOutput() {}
 function clear() {
   displayElement.innerText = "0";
 }
