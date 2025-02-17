@@ -16,41 +16,7 @@ buttons.forEach((button) => {
       clear();
     } else if (buttonVal === "=") {
       const expression = displayElement.innerText;
-      let sum = 0;
-      let num = 0; // number after operand
-      let prev = 0; // number before operand, needed for PEMDAS
-      let operator = "+";
-      for (let i = 0; i < expression.length; i++) {
-        let digit = +expression[i];
-        if (!isNaN(digit)) {
-          // if digit then update num
-          num = num * 10 + digit;
-        }
-        if (Number.isNaN(digit) || i === expression.length - 1) {
-          // process expression when we reach an operator or the end
-          if (operator === "*") {
-            // multiply previous number with current number
-            prev *= num;
-          } else if (operator === "/") {
-            prev /= num;
-          } else if (operator === "+") {
-            // only evaluate final sum after multiplication and division
-            sum += prev;
-            // update prev to the current number in case of future / or *
-            prev = num;
-          } else if (operator === "-") {
-            sum += prev;
-            prev = -num;
-          } else {
-            displayElement.innerText = "ERROR";
-          }
-          num = 0;
-          operator = expression[i];
-        }
-      }
-
-      sum += prev;
-      displayElement.innerText = sum.toFixed(2); //answer fixed to 2 decimal places
+      displayElement.innerText = evaluateExpression(expression);
     } else {
       displayElement.innerText += event.target.innerText;
     }
@@ -61,4 +27,42 @@ buttons.forEach((button) => {
 
 function clear() {
   displayElement.innerText = "0";
+}
+
+function evaluateExpression(expression) {
+  let sum = 0;
+  let num = 0; // number after operand
+  let prev = 0; // number before operand, needed for PEMDAS
+  let operator = "+";
+  for (let i = 0; i < expression.length; i++) {
+    let digit = +expression[i];
+    if (!isNaN(digit)) {
+      // if digit then update num
+      num = num * 10 + digit;
+    }
+    if (Number.isNaN(digit) || i === expression.length - 1) {
+      // process expression when we reach an operator or the end
+      if (operator === "*") {
+        // multiply previous number with current number
+        prev *= num;
+      } else if (operator === "/") {
+        prev /= num;
+      } else if (operator === "+") {
+        // only evaluate final sum after multiplication and division
+        sum += prev;
+        // update prev to the current number in case of future / or *
+        prev = num;
+      } else if (operator === "-") {
+        sum += prev;
+        prev = -num;
+      } else {
+        return "ERROR";
+      }
+      num = 0;
+      operator = expression[i];
+    }
+  }
+
+  sum += prev;
+  return sum.toFixed(2); //answer fixed to 2 decimal places
 }
