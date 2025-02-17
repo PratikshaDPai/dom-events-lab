@@ -36,7 +36,7 @@ buttons.forEach((button) => {
           } else if (operator === "+") {
             // only evaluate final sum after multiplication and division
             sum += prev;
-            //update prev to the current number in case of future / or *
+            // update prev to the current number in case of future / or *
             prev = num;
           } else if (operator === "-") {
             sum += prev;
@@ -50,7 +50,7 @@ buttons.forEach((button) => {
       }
 
       sum += prev;
-      displayElement.innerText = sum;
+      displayElement.innerText = sum.toFixed(2); //answer fixed to 2 decimal places
     } else {
       displayElement.innerText += event.target.innerText;
     }
