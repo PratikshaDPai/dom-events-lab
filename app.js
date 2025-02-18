@@ -32,14 +32,28 @@ function evaluateExpression(expression) {
   let sum = 0;
   let num = 0; // number after operand
   let prev = 0; // number before operand, needed for PEMDAS
+  let isDecimal = false;
+  let decimalPlace = 10;
   let operator = "+";
   for (let i = 0; i < expression.length; i++) {
     let digit = +expression[i];
-    if (!isNaN(digit)) {
-      // if digit then update num
-      num = num * 10 + digit;
+    if (!isNaN(digit) || expression[i] === ".") {
+      if (expression[i] === ".") {
+        isDecimal = true;
+      } else {
+        if (isDecimal) {
+          num += digit / decimalPlace;
+          decimalPlace *= 10;
+        } else {
+          // if digit then update num
+          num = num * 10 + digit;
+        }
+      }
     }
-    if (Number.isNaN(digit) || i === expression.length - 1) {
+    if (
+      (expression[i] !== "." && Number.isNaN(digit)) ||
+      i === expression.length - 1
+    ) {
       // process expression when we reach an operator or the end
       if (operator === "*") {
         // multiply previous number with current number
@@ -59,6 +73,8 @@ function evaluateExpression(expression) {
       }
       num = 0;
       operator = expression[i];
+      isDecimal = false;
+      decimalPlace = 10;
     }
   }
 
